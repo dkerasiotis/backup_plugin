@@ -1,0 +1,215 @@
+/* WP Simple Backup — Admin Styles */
+
+#wpsb-admin-wrap {
+    max-width: 800px;
+}
+
+#wpsb-admin-wrap h1 {
+    font-size: 1.8em;
+    margin-bottom: 4px;
+}
+
+.wpsb-subtitle {
+    color: #666;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+/* Card container */
+.wpsb-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+    padding: 24px 28px;
+    margin-bottom: 20px;
+}
+
+.wpsb-card h2 {
+    margin-top: 0;
+    font-size: 1.15em;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 18px;
+}
+
+/* Component checkboxes */
+.wpsb-components {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.wpsb-component-label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    border: 1px solid #e2e2e2;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+    user-select: none;
+}
+
+.wpsb-component-label:hover {
+    border-color: #2271b1;
+    background: #f6f9fc;
+}
+
+.wpsb-component-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    cursor: pointer;
+    margin: 0;
+}
+
+.wpsb-component-label input[type="checkbox"]:checked + .wpsb-component-icon + .wpsb-component-info strong {
+    color: #2271b1;
+}
+
+.wpsb-component-icon {
+    font-size: 1.5em;
+    flex-shrink: 0;
+}
+
+.wpsb-component-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.wpsb-component-info strong {
+    font-size: 0.95em;
+}
+
+.wpsb-component-info small {
+    color: #777;
+    font-size: 0.82em;
+}
+
+/* Start button */
+.wpsb-actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+#wpsb-start-backup {
+    font-size: 1em !important;
+    height: auto !important;
+    padding: 10px 28px !important;
+}
+
+#wpsb-start-backup:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Progress notice */
+.wpsb-notice {
+    background: #fff8e1;
+    border-left: 4px solid #f0ad00;
+    padding: 8px 14px;
+    border-radius: 0 4px 4px 0;
+    font-size: 0.9em;
+    margin-bottom: 16px;
+}
+
+/* Progress bar */
+.wpsb-progress-bar-track {
+    background: #e8e8e8;
+    border-radius: 50px;
+    height: 18px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.wpsb-progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #2271b1, #72aee6);
+    border-radius: 50px;
+    transition: width .5s ease;
+    min-width: 4px;
+}
+
+.wpsb-progress-bar-fill.wpsb-done {
+    background: linear-gradient(90deg, #1d8348, #2ecc71);
+}
+
+.wpsb-progress-bar-fill.wpsb-error {
+    background: linear-gradient(90deg, #c0392b, #e74c3c);
+}
+
+.wpsb-progress-message {
+    font-size: 0.9em;
+    color: #555;
+    margin-bottom: 12px;
+    font-style: italic;
+}
+
+/* Log list */
+.wpsb-log {
+    background: #f9f9f9;
+    border: 1px solid #e5e5e5;
+    border-radius: 4px;
+    padding: 10px 16px;
+    max-height: 200px;
+    overflow-y: auto;
+    font-family: monospace;
+    font-size: 0.82em;
+    color: #444;
+    margin: 0;
+    list-style: none;
+}
+
+.wpsb-log li {
+    padding: 2px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.wpsb-log li:last-child {
+    border-bottom: none;
+}
+
+.wpsb-log .wpsb-log-time {
+    color: #999;
+    margin-right: 8px;
+}
+
+.wpsb-log .wpsb-log-error {
+    color: #c0392b;
+    font-weight: bold;
+}
+
+/* Download button */
+.wpsb-download-btn {
+    font-size: 1em !important;
+    height: auto !important;
+    padding: 10px 28px !important;
+    background: #1d8348 !important;
+    border-color: #1a7040 !important;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 12px;
+}
+
+.wpsb-download-btn:hover {
+    background: #1a7040 !important;
+    border-color: #155934 !important;
+    color: #fff !important;
+}
+
+.wpsb-hint {
+    color: #888;
+    font-size: 0.85em;
+    margin-top: 8px;
+}
+
+/* Error state */
+#wpsb-progress.wpsb-has-error .wpsb-notice {
+    background: #fdecea;
+    border-left-color: #c0392b;
+}
