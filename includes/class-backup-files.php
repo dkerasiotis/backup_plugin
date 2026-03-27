@@ -52,18 +52,20 @@ class WPSB_Backup_Files {
         try {
             $iterator = new RecursiveIteratorIterator(
                 new RecursiveDirectoryIterator( $dir, RecursiveDirectoryIterator::SKIP_DOTS ),
-                RecursiveIteratorIterator::SELF_FIRST
+                RecursiveIteratorIterator::SELF_FIRST,
+                RecursiveIteratorIterator::CATCH_GET_CHILD // silently skip symlinks-to-files and unreadable dirs
             );
 
             foreach ( $iterator as $item ) {
                 $real_path = $item->getRealPath();
 
-                // Skip excluded paths
+                // Skip broken symlinks (getRealPath() returns false)
+                if ( false === $real_path ) {
+                    continue;
+                }
+
+                // Skip excluded paths (children are also caught by prefix-matching in is_excluded)
                 if ( $this->is_excluded( $real_path, $exclusions ) ) {
-                    if ( $item->isDir() ) {
-                        // Tell the iterator not to descend into this directory
-                        $iterator->getInnerIterator()->rewind();
-                    }
                     continue;
                 }
 
