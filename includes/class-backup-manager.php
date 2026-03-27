@@ -52,18 +52,10 @@ class WPSB_Backup_Manager {
             return;
         }
 
-        // Build the download URL (authenticated AJAX endpoint)
-        $download_nonce = wp_create_nonce( 'wpsb_download_action' );
-        $download_url   = add_query_arg(
-            array(
-                'action'    => 'wpsb_download_backup',
-                'backup_id' => rawurlencode( $backup_id ),
-                'nonce'     => $download_nonce,
-            ),
-            admin_url( 'admin-ajax.php' )
-        );
-
-        WPSB_Backup_Logger::complete( $backup_id, $download_url );
+        // Pass the backup_id to complete() — the download URL is built client-side
+        // so that the nonce is created in the user's browser context, not here in cron
+        // where there is no logged-in user (user ID = 0).
+        WPSB_Backup_Logger::complete( $backup_id, $backup_id );
     }
 
     /**

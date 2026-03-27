@@ -115,12 +115,27 @@
             stopPolling();
             setProgressBar(100);
             $('#wpsb-progress-bar').addClass('wpsb-done');
-            showDownload(data.download_url);
+            showDownload(buildDownloadUrl(backupId));
         } else if (data.status === 'error') {
             stopPolling();
             $('#wpsb-progress-bar').addClass('wpsb-error');
             showError(data.message || wpsb_ajax.strings.error);
         }
+    }
+
+    /**
+     * Build the authenticated download URL client-side.
+     * The nonce must be created in the user's browser context — not in WP-Cron
+     * where there is no logged-in user, which would cause nonce verification to fail.
+     *
+     * @param  {string} id backup_id
+     * @return {string}    Full AJAX URL for the download request
+     */
+    function buildDownloadUrl(id) {
+        return wpsb_ajax.ajaxurl
+            + '?action=wpsb_download_backup'
+            + '&backup_id=' + encodeURIComponent(id)
+            + '&nonce='     + encodeURIComponent(wpsb_ajax.nonce);
     }
 
     /**

@@ -75,7 +75,7 @@ class WPSB_Admin_Ajax {
      */
     public function handle_download() {
         $nonce = isset( $_GET['nonce'] ) ? sanitize_text_field( wp_unslash( $_GET['nonce'] ) ) : '';
-        if ( ! wp_verify_nonce( $nonce, 'wpsb_download_action' ) ) {
+        if ( ! wp_verify_nonce( $nonce, 'wpsb_backup_action' ) ) {
             wp_die( 'Security check failed.', 403 );
         }
         if ( ! current_user_can( 'manage_options' ) ) {
