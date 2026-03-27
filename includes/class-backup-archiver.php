@@ -128,8 +128,11 @@ class WPSB_Backup_Archiver {
         $filename = 'wp-backup-' . date( 'Y-m-d-His' ) . '.zip';
         $filesize = filesize( $zip_path );
 
-        // Disable output buffering
-        if ( ob_get_level() ) {
+        // Clear ALL levels of output buffering.
+        // ob_end_clean() alone only removes one level; WordPress and plugins
+        // can open multiple levels, and any stray output in them will corrupt
+        // the HTTP response causing ERR_INVALID_RESPONSE in the browser.
+        while ( ob_get_level() > 0 ) {
             ob_end_clean();
         }
 
@@ -139,6 +142,7 @@ class WPSB_Backup_Archiver {
         header( 'Cache-Control: no-cache, no-store, must-revalidate' );
         header( 'Pragma: no-cache' );
         header( 'Expires: 0' );
+        header( 'X-Accel-Buffering: no' ); // prevent Nginx from buffering the response
 
         $handle = fopen( $zip_path, 'rb' );
         if ( $handle ) {
@@ -149,8 +153,9 @@ class WPSB_Backup_Archiver {
             fclose( $handle );
         }
 
-        // Delete the ZIP after delivery
-        @unlink( $zip_path );
+        // Do NOT unlink here — if the browser retries after a failed download
+        // the file must still exist. The 24h cleanup in cleanup_old_backups()
+        // will remove it automatically.
 
         exit;
     }
