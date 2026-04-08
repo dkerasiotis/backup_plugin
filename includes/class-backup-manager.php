@@ -35,8 +35,11 @@ class WPSB_Backup_Manager {
             }
         }
 
-        // Raise limits for large backups
-        @set_time_limit( 600 );
+        // Remove execution time limit entirely — this process runs in WP-Cron
+        // and ZipArchive::close() can take many minutes on large sites.
+        // A fixed limit (e.g. 600s) kills the process mid-close(), leaving an
+        // incomplete ZIP with no file on disk.
+        @set_time_limit( 0 );
         @ini_set( 'memory_limit', '256M' );
 
         // Calculate total steps: components + 1 for finalising

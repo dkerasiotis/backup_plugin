@@ -95,10 +95,19 @@ class WPSB_Backup_Archiver {
         $this->add_info_file( $zip, $components, $backup_id );
 
         WPSB_Backup_Logger::update( $backup_id, $step, 'Finalising archive…' );
-        $zip->close();
+
+        // ZipArchive::addFile() is lazy — all file I/O happens here at close() time.
+        // Reset the time limit once more right before close() so a slow finalisation
+        // on a large site cannot hit a stale limit set earlier in the process.
+        @set_time_limit( 0 );
+        $closed = $zip->close();
 
         // Clean up temporary work directory
         $this->cleanup_work_dir( $work_dir );
+
+        if ( false === $closed ) {
+            return new WP_Error( 'zip_close_failed', 'Could not finalise ZIP archive. Check available disk space on the server.' );
+        }
 
         if ( ! file_exists( $zip_path ) ) {
             return new WP_Error( 'zip_not_created', 'ZIP file was not created.' );
